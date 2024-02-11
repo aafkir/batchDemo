@@ -11,10 +11,9 @@ import java.util.Map;
 
 @RestController
 public class JobRestController {
-    @Autowired
-    private JobLauncher jobLauncher;
-
-    @Autowired  private Job job;
+    @Autowired private JobLauncher jobLauncher;
+    @Autowired private Job job;
+    @Autowired private BankTransactionItemAnalyticsProcessor analyticsProcessor;
 
     @GetMapping("/startJob")
     public BatchStatus load() throws Exception{
@@ -26,5 +25,14 @@ public class JobRestController {
             System.out.println("......");
         }
         return jobExecution.getStatus();
+    }
+
+
+    @GetMapping("/analytics")
+    public Map <String , Double> analytics() throws  Exception{
+            Map<String, Double> map = new HashMap<>();
+            map.put("1",analyticsProcessor.getTotalCredit());
+            map.put("2",analyticsProcessor.getTotalDebit());
+                    return map;
     }
 }
